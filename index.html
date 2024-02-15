@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja_JP">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Unicode にするやつ</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<style>
+		body {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;
+			margin: 0;
+			flex-direction: column;
+		}
+		h1, form, #output {
+			margin-bottom: 25px;
+		}
+		#input, #output {
+			text-align: center;
+		}
+		#output {
+			font-size: 230%; /* 現在の文字サイズの1.3倍 */
+			border: 1px solid #000;
+			background-color: #f0f0f0;
+			padding: 10px;
+			height: 80px;
+			overflow: auto;
+			width: 200px; /* ここで幅を設定します。適宜調整してください。 */
+		}
+	</style>
+</head>
+<body>
+
+	<h1>Unicodeのコードから文字を表示する</h1>
+
+	<!-- input フォームをUnicodeのコードと認識して id=output のテキストエリアに表示させる -->
+	<form>
+		<input type="text" id="input" oninput="convert()" class="form-control">
+	</form>
+
+	<!-- Unicodeのコードを文字に変換して表示させる -->
+	<p id="output"></p>
+<script>
+	// Unicodeを文字に変換する
+	function convert() {
+		const input = document.getElementById('input');
+		const output = document.getElementById('output');
+
+		// 0x が input の頭にない時は付与する。
+		const unicode = (input.value.indexOf('0x') !== 0) ?  '0x' + input.value : input.value;
+		const char = String.fromCharCode(unicode);
+
+		// 入力が有効なUnicode文字に変換できるかチェック
+		if (char !== 'NaN') {
+			input.style.backgroundColor = '#f0f0f0'; // 灰色
+			output.innerHTML = char;
+		} else {
+			input.style.backgroundColor = '#ff0000'; // 赤色
+			output.innerHTML = '';
+		}
+	}
+</script>
+
+</body>
+</html>
