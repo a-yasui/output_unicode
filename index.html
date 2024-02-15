@@ -43,6 +43,19 @@
 	<!-- Unicodeのコードを文字に変換して表示させる -->
 	<p id="output"></p>
 <script>
+	(function(){
+		window.onload = function() {
+			const input = document.getElementById('input');
+			const hashValue = window.location.hash.substring(1); // remove '#'
+			input.value = hashValue;
+			convert(); // call the convert function to update the output
+		}
+		document.getElementById('input').oninput = function() {
+			convert();
+			window.location.hash = '#' + this.value;
+		}
+	})();
+
 	// Unicodeを文字に変換する
 	function convert() {
 		const input = document.getElementById('input');
