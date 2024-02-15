@@ -63,15 +63,15 @@
 
 		// 0x が input の頭にない時は付与する。
 		const unicode = (input.value.indexOf('0x') !== 0) ?  '0x' + input.value : input.value;
-		const char = String.fromCharCode(unicode);
 
 		// 入力が有効なUnicode文字に変換できるかチェック
-		if (char !== 'NaN') {
+		if (!isNaN(unicode)) {
+			const char = String.fromCharCode(unicode);
 			input.style.backgroundColor = '#f0f0f0'; // 灰色
 			output.innerHTML = char;
 		} else {
 			input.style.backgroundColor = '#ff0000'; // 赤色
-			output.innerHTML = '';
+			output.innerHTML = '無効';
 		}
 	}
 </script>
