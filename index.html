@@ -72,19 +72,37 @@
 		}
 	})();
 
+	function convertUTF(input_string){
+		// 0x や \u と書いている時は、その２文字を消す
+		if (input_string.indexOf('0x') === 0) {
+			input_string = input_string.substring(2);
+		} else if (input_string.indexOf("\\u") === 0) {
+			input_string = input_string.substring(2);
+		}
+
+		// 5文字のときは、頭に 000 をつける
+		if (input_string.length === 5) {
+			input_string = '000' + input_string;
+		}
+		return "\\u" + input_string;
+	}
+
 	// Unicodeを文字に変換する
 	function convert() {
 		const input = document.getElementById('input');
 		const output = document.getElementById('output');
 
 		// 0x が input の頭にない時は付与する。
-		const unicode = (input.value.indexOf('0x') !== 0) ?  '0x' + input.value : input.value;
+		const unicode = convertUTF(input.value);
+		console.log("Unicode is : " + unicode)
+		const decodedString = String.fromCodePoint(
+				parseInt(unicode.replace("\\u", ""), 16));
+		console.log("Unicode is : " + decodedString)
 
 		// 入力が有効なUnicode文字に変換できるかチェック
-		if (!isNaN(unicode)) {
-			const char = String.fromCharCode(unicode);
+		if (decodedString) {
 			input.style.backgroundColor = '#f0f0f0'; // 灰色
-			output.innerHTML = char;
+			output.innerHTML = decodedString;
 		} else {
 			input.style.backgroundColor = '#ff0000'; // 赤色
 			output.innerHTML = '無効';
